@@ -12,7 +12,7 @@ const Register = (props) => {
 
   const history = useHistory();
 
-  //console.log(userbane, password, confirm);
+  //console.log(usernane, password, confirm);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -22,7 +22,8 @@ const Register = (props) => {
       setError("Confirm password does not match original password.");
       return;
     }
-    //now i want to send a req to the server to register
+
+    //send a req to the server to register
     const resp = await fetch(`${API}/users/register`, {
       method: "POST",
       headers: {
@@ -30,8 +31,8 @@ const Register = (props) => {
       },
       body: JSON.stringify({
         user: {
-          username,
-          password,
+          username: username,
+          password: password,
         },
       }),
     });
@@ -43,12 +44,10 @@ const Register = (props) => {
     if (info.error) {
       return setError(info.error.message);
     }
-    //i want to save token in state and local storage
-    //what question to do consider when deciding wherer to put state?
-    //whos gonna need it
-
+    //saves token in state and local storage
     setToken(info.data.token);
     localStorage.setItem("token", info.data.token);
+
     //take us home and display registered msg .programtically navigate
     history.push("/");
   };

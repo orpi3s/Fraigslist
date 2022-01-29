@@ -11,7 +11,7 @@ export const API =
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [token, setToken] = useState("");
-  const [user, setUSer] = useState(null);
+  const [user, setUser] = useState(null);
 
   async function fetchPosts() {
     const resp = await fetch(`${API}/posts`);
@@ -38,36 +38,34 @@ const App = () => {
     const info = await resp.json();
     //store all user info in state
     if (info.success) {
-      setUSer(info.data);
+      setUser(info.data);
     }
   };
 
   // use for testing when needed console.log(info);
+
+  //fetch posts when app first runs
+  useEffect(() => {
+    fetchUser();
+    fetchPosts();
+  }, [token]);
+
+  return (
+    <>
+      <Navbar user={user} setToken={setToken} setUser={setUser} />
+
+      <Route exact path="/">
+        <Home />
+      </Route>
+
+      <Route exact path="/posts">
+        <Posts posts={posts} />
+      </Route>
+
+      <Route exact path="/register">
+        <Register setToken={setToken} />
+      </Route>
+    </>
+  );
 };
-
-//fetch posts when app first runs
-useEffect(() => {
-  fetchUser();
-  fetchPosts();
-}, [token]);
-
-return (
-  <>
-    {/*//make a componet in a mod called Navbar that renders links*/}
-    <Navbar user={user} setToken={setToken} setUSer={setUser} />
-
-    <Route exact path="/">
-      <Home />
-    </Route>
-
-    <Route exact path="/posts">
-      <Posts posts={posts} />
-    </Route>
-
-    <Route exact path="/register">
-      <Register setToken={setToken} />
-    </Route>
-  </>
-);
-
 export default App;
