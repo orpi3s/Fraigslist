@@ -4,6 +4,8 @@ import Home from "./Home";
 import Navbar from "./Navbar";
 import Posts from "./Posts";
 import Register from "./Register";
+import Login from "./Login";
+//import "./style.css";
 
 export const API =
   "https://strangers-things.herokuapp.com/api/2110-FTB-ET-WEB-PT";
@@ -12,12 +14,16 @@ const App = () => {
   const [posts, setPosts] = useState([]);
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
 
   async function fetchPosts() {
-    const resp = await fetch(`${API}/posts`);
+    const resp = await fetch(`${API}/Posts`);
     const info = await resp.json();
     setPosts(info.data.posts);
   }
+
   //console.log(user);
 
   //how do i get my state token back on page refresh from the localstorage token
@@ -53,18 +59,39 @@ const App = () => {
   return (
     <>
       <Navbar user={user} setToken={setToken} setUser={setUser} />
+      <div id="main-parts">
+        <Route exact path="/">
+          <Home />
+        </Route>
 
-      <Route exact path="/">
-        <Home />
-      </Route>
+        <Route exact path="/Posts">
+          <Posts setPosts={setPosts} posts={posts} />
+        </Route>
 
-      <Route exact path="/posts">
-        <Posts posts={posts} />
-      </Route>
-
-      <Route exact path="/register">
-        <Register setToken={setToken} />
-      </Route>
+        <Route exact path="/Register">
+          <Register
+            token={token}
+            setToken={setToken}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            confirm={confirm}
+            setConfirm={setConfirm}
+          />
+        </Route>
+        <Route exact path="/Login">
+          <Login
+            setToken={setToken}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            confirm={confirm}
+            setConfirm={setConfirm}
+          />
+        </Route>
+      </div>
     </>
   );
 };

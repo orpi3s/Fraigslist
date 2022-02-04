@@ -19,6 +19,7 @@ const Navbar = ({ user, setToken, setUser }) => {
       >
         log out
       </Link>
+      <Link to="/Login">Log in</Link>
       {/*I only want a welcome mesg if a user is logged in.
       if user exists*/}
       {user && <span>Welcome {user.username}</span>}

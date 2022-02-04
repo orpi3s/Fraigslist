@@ -27,7 +27,7 @@ const Register = (props) => {
     const resp = await fetch(`${API}/users/register`, {
       method: "POST",
       headers: {
-        "Content-Type": "applications/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         user: {

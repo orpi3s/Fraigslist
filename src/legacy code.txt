@@ -1,0 +1,48 @@
+const [checkLogin, setCheckLogin] = useState("");
+
+function Loginform({ Login, error }) {
+  const [userdetails, setuserDetails] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    Login(details);
+  };
+
+  const handleChange = (e) => {
+    setuserDetails(e.target.value);
+  };
+
+  //work on handling
+
+  return (
+    <div id="container">
+      <div id="navbar">Login:</div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="username">username</label>
+        <input
+          required
+          type="username"
+          name="username"
+          value={username}
+          onChange={(e) =>
+            setuserDetails({ ...userdetails, username: e.target.value })
+          }
+          value={userdetails.username}
+        />
+        <label htmlFor="password">password</label>
+        <input
+          required
+          type="password"
+          name="password"
+          value={password}
+          onChange={(e) =>
+            setuserDetails({ ...userdetails, password: e.target.value })
+          }
+          value={userdetails.password}
+        />
+        <button type="submit">Submit</button>
+      </form>
