@@ -1,31 +1,62 @@
-//navbar renders links
-
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Navbar = ({ user, setToken, setUser }) => {
+const Nav = ({ token }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [token]);
+
   return (
-    <>
-      <Link to="/">Home</Link>
-      <Link to="/posts">Posts</Link>
-      <Link to="/register">Register</Link>
-      <Link
-        to="/"
-        onClick={() => {
-          //logged in: token in local storage and state
-          setToken("");
-          setUser(null);
-          localStorage.removeItem("token");
-        }}
-      >
-        log out
-      </Link>
-      <Link to="/Login">Log in</Link>
-      {/*I only want a welcome mesg if a user is logged in.
-      if user exists*/}
-      {user && <span>Welcome {user.username}</span>}
-    </>
+    <div id="nav-bar">
+      <div id="nav-links">
+        <span>
+          <Link to="/posts">View Posts from Strangers!</Link>
+        </span>
+        <div>
+          {isLoggedIn ? (
+            <div>
+              <span>
+                <Link to="/posts/new">Add a Post</Link>
+              </span>
+              <span>
+                <Link to="/profile">Profile</Link>
+              </span>
+              <span>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    setIsLoggedIn(false);
+                  }}
+                >
+                  Logout
+                </Link>
+              </span>
+            </div>
+          ) : (
+            <div>
+              <div>
+                <span>
+                  <Link to="/login">Login</Link>
+                </span>
+                <span>
+                  <Link to="/register">Register</Link>
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
+
+  console.log(isLoggedIn);
 };
 
-export default Navbar;
-console.log(false && "test");
+export default Nav;

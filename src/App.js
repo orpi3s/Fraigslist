@@ -4,11 +4,39 @@ import Home from "./Home";
 import Navbar from "./Navbar";
 import Posts from "./Posts";
 import Register from "./Register";
-import Login from "./Login";
+import Login from "./Login";;
 //import "./style.css";
+//use the puppybowl stuff
+export const API = "https://strangers-things.herokuapp.com/api/2110-FTB-ET-WEB-PT";
+export const BASE_URL = "https://strangers-things.herokuapp.com/api/";
+export const COHORT_NAME = "2110-ftb-et-web-pt";
+export const API_URL = BASE_URL + COHORT_NAME;
 
-export const API =
-  "https://strangers-things.herokuapp.com/api/2110-FTB-ET-WEB-PT";
+export const callApi = async ({ url, method, token, body }) => {
+  console.log("callApi: ", { url, method, token, body });
+  try {
+    const options = {
+      method: method ? method.toUpperCase() : "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+    if (token) {
+      options.headers["Authorization"] = `Bearer ${token}`;
+    }
+    console.log("Call API Request URL: ", API_URL + url);
+    console.log("Call API Options: ", options);
+    const response = await fetch(API_URL + url, options);
+    const data = await response.json();
+    console.log("data: ", data);
+    if (data.error) throw data.error;
+    return data;
+  } catch (error) {
+    console.error("ERROR: ", error);
+  }
+};
+
 
 const App = () => {
   const [posts, setPosts] = useState([]);
@@ -95,4 +123,13 @@ const App = () => {
     </>
   );
 };
+
+//move to index if possible if not leave here 
 export default App;
+export { default as Posts } from "./Posts";
+export { default as UserPosts } from "./UserPosts";
+export { default as NewPostForm } from "./NewPostForm";
+export { default as Navbar } from "./Navbar";
+export { default as Login } from "./Login";
+export { default as Profile } from "./Profile";
+

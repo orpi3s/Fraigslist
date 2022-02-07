@@ -1,0 +1,125 @@
+const [checkLogin, setCheckLogin] = useState("");
+
+function Loginform({ Login, error }) {
+  const [userdetails, setuserDetails] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    Login(details);
+  };
+
+  const handleChange = (e) => {
+    setuserDetails(e.target.value);
+  };
+
+  //work on handling
+
+  return (
+    <div id="container">
+      <div id="navbar">Login:</div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="username">username</label>
+        <input
+          required
+          type="username"
+          name="username"
+          value={username}
+          onChange={(e) =>
+            setuserDetails({ ...userdetails, username: e.target.value })
+          }
+          value={userdetails.username}
+        />
+        <label htmlFor="password">password</label>
+        <input
+          required
+          type="password"
+          name="password"
+          value={password}
+          onChange={(e) =>
+            setuserDetails({ ...userdetails, password: e.target.value })
+          }
+          value={userdetails.password}
+        />
+        <button type="submit">Submit</button>
+      </form>
+
+
+
+
+
+const Login = (props) => {
+  const setToken = props.setToken;
+  //we need to collect username and pass
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
+
+  const history = useHistory();
+
+  //console.log(usernane, password, confirm);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (password === password) {
+      //change error state with msg "wrong password"
+      setError("Username or Password is Incorrect");
+      return;
+    }
+
+    //send a req to the server to Login
+    const resp = await fetch(`${API}/users/Login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: {
+          username: username,
+          password: password,
+        },
+      }),
+    });
+    //convert resp to json
+    const info = await resp.json();
+    console.log(info);
+    //display error message under form
+    //only set error if error exists
+    if (info.error) {
+      return setError(info.error.message);
+    }
+    //saves token in state and local storage
+    setToken(info.data.token);
+    localStorage.setItem("token", info.data.token);
+
+    //take us home and display Logined msg .programtically navigate
+    history.push("/");
+  };
+  return (
+    <>
+      <h1>Login:</h1>
+      <form onSubmit={handleLogin}>
+        <input
+          required
+          placeholder="Enter username.."
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          required
+          placeholder="Enter password.."
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button>Login</button>
+      </form>
+      <p>{error}</p>
+    </>
+  );
+};
+export default Login;

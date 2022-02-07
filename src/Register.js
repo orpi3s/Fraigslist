@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { API } from "./App";
-
+//use this as ref for login page 
 const Register = (props) => {
   const setToken = props.setToken;
   //we need to collect username and pass
